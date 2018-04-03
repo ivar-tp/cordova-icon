@@ -197,6 +197,12 @@ var getProjectName = function () {
         deferred.reject(err);
       }
       var projectName = result.widget.name[0];
+
+      // Exception for XML nodes with attributes (e.g. `<name short="My Project">MyProject</name>`)
+      if (_.isObject(projectName) && _.has(projectName, '_')) {
+        projectName = projectName['_'];
+      }
+
       deferred.resolve(projectName);
     });
   });
